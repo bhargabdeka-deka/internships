@@ -1,0 +1,50 @@
+.tracker-container {
+  max-width: 600px;
+  margin: auto;
+  text-align: center;
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.tracker-container h2 {
+  color: #007bff;
+  margin-bottom: 1rem;
+}
+
+.tracker-container input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.tracker-container button {
+  padding: 0.7rem 1.5rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.tracker-container button:hover {
+  background-color: #0056b3;
+}
+
+.chart-container {
+  margin-top: 2rem;
+}
+
+.energy-message {
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  color: #555;
+  background: #e6f2ff;
+  padding: 1rem;
+  border-left: 4px solid #007bff;
+  border-radius: 8px;
+}
