@@ -1,70 +1,49 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './AdminDashboard.css';
 
-const user = JSON.parse(localStorage.getItem('user')); // Optional: to personalize greeting
+const user = JSON.parse(localStorage.getItem('user')); // Personalize greeting if available
 
 const AdminDashboard = () => {
   return (
-    <div className="admin-dashboard" style={styles.container}>
-      <h2 style={styles.heading}>⚙️ Admin Control Panel</h2>
+    <div className="admin-dashboard-container">
+      <header className="admin-header">
+        <h2>⚙️ Admin Control Panel</h2>
+        <p>
+          Welcome, <strong>{user?.name}</strong> (<em>{user?.role}</em>)
+        </p>
+      </header>
 
-      <p style={styles.welcome}>
-        Welcome <strong>{user?.name}</strong> ({user?.role})
-      </p>
+      <section className="admin-grid">
+        {/* 🔌 Connection Requests */}
+        <Link to="/admin/connections" className="admin-card">
+          <div>
+            <h3>📥 Connection Requests</h3>
+            <p>Review and approve new connection applications.</p>
+          </div>
+          <span className="admin-action">View →</span>
+        </Link>
 
-      <div style={styles.cardContainer}>
-        <div style={styles.card}>
-          <h3>📥 Connection Requests</h3>
-          <p>Approve pending service applications</p>
-          <Link to="/admin/connections" style={styles.button}>View Requests</Link>
-        </div>
+        {/* 🛠 Helpdesk Tickets */}
+        <Link to="/admin/helpdesk" className="admin-card">
+          <div>
+            <h3>🆘 Helpdesk Tickets</h3>
+            <p>Manage complaints and track issue resolutions.</p>
+          </div>
+          <span className="admin-action">View →</span>
+        </Link>
 
-        <div style={styles.card}>
-          <h3>🆘 Helpdesk Tickets</h3>
-          <p>Respond to complaints & resolve issues</p>
-          <Link to="/admin/helpdesk" style={styles.button}>View Tickets</Link>
-        </div>
-      </div>
+        {/* 📋 KYC Approvals */}
+        <Link to="/admin/kyc-review" className="admin-card">
+          <div>
+            <h3>📄 KYC Verification</h3>
+            <p>Approve user-uploaded KYC documents securely.</p>
+          </div>
+          <span className="admin-action">Review →</span>
+        </Link>
+      </section>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    padding: '2rem',
-    fontFamily: 'Segoe UI, sans-serif',
-  },
-  heading: {
-    fontSize: '2rem',
-    marginBottom: '1rem',
-    color: '#333'
-  },
-  welcome: {
-    marginBottom: '2rem',
-    fontSize: '1rem'
-  },
-  cardContainer: {
-    display: 'flex',
-    gap: '1.5rem',
-    flexWrap: 'wrap'
-  },
-  card: {
-    flex: '1',
-    minWidth: '250px',
-    padding: '1rem',
-    border: '1px solid #ccc',
-    borderRadius: '8px',
-    backgroundColor: '#f9f9f9'
-  },
-  button: {
-    marginTop: '0.5rem',
-    display: 'inline-block',
-    padding: '8px 12px',
-    backgroundColor: '#0078d4',
-    color: '#fff',
-    borderRadius: '4px',
-    textDecoration: 'none'
-  }
 };
 
 export default AdminDashboard;

@@ -1,78 +1,206 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation
+} from 'react-router-dom';
 
 // 🌐 User Pages
 import HomePage from './pages/HomePage';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import WelcomePage from './pages/WelcomePage';
-import ConnectionForm from './pages/ConnectionForm';
 import EnergyTrackerPage from './pages/EnergyTrackerPage';
+import KycBillDashboard from './pages/KycBillPortal/KycBillDashboard';
+import HelpdeskPage from './pages/HelpdeskPortal/HelpdeskPage';
 
 // 🛠️ Admin Panel Pages
 import AdminDashboard from './pages/AdminPanel/AdminDashboard';
 import ConnectionRequests from './pages/AdminPanel/ConnectionRequests';
-import HelpdeskTickets from './pages/AdminPanel/HelpdeskTickets';
+import HelpdeskTickets from './pages/AdminPanel/HelpdeskTicketsPage';
+import KycReviewPanel from './pages/AdminPanel/KycReviewPanel';
 
 // 👑 Super Admin Panel Pages
 import SuperAdminPanel from './pages/SuperPanel/SuperAdminPanel';
 import PromoteUser from './pages/SuperPanel/PromoteUser';
 
 // 🧭 Global Navigation
-import Navbar from './components/Navbar'; // Optional if you've created this
+import UserNavbar from './components/UserNavbar';
+import AdminNavbar from './components/AdminNavbar';
+import SuperNavbar from './components/SuperNavbar';
+import ConnectionStepper from './pages/ConnectionPortal/ConnectionStepper';
 
-// 🔐 Load user from localStorage or global state
-const user = JSON.parse(localStorage.getItem('user'));
+function AppWrapper() {
+  const location = useLocation();
+  const [user, setUser] = useState(null);
+  const [sessionLoaded, setSessionLoaded] = useState(false);
 
-function App() {
+  useEffect(() => {
+    const stored = localStorage.getItem('user');
+    if (stored) {
+      setUser(JSON.parse(stored));
+    }
+    setSessionLoaded(true);
+  }, [location.pathname]);
+
+  if (!sessionLoaded) {
+    return (
+      <div style={{ padding: '2rem', textAlign: 'center' }}>
+        ⏳ Loading session...
+      </div>
+    );
+  }
+
+  const isPublicPage = ['/', '/login', '/signup'].includes(location.pathname);
+  const showNavbar = user?.token && !isPublicPage;
+
   return (
-    <Router>
-      <Navbar /> {/* Optional: comment out if not using navbar */}
+    <>
+      {/* Role-based Navbar */}
+      {showNavbar && user.role === 'user' && <UserNavbar />}
+      {showNavbar && ['admin', 'superadmin'].includes(user.role) && (
+        user.role === 'admin' ? <AdminNavbar /> : <SuperNavbar />
+      )}
+
       <Routes>
-        {/* 🎉 Public/User Routes */}
+        {/* Public Routes */}
         <Route path="/" element={<WelcomePage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/apply" element={<ConnectionForm />} />
-        <Route path="/tracker" element={<EnergyTrackerPage />} />
 
-        {/* 🔐 Admin Routes: accessible by admin or superadmin */}
+        {/* User-only Pages */}
+        <Route
+          path="/homepage"
+          element={
+            user?.token && user.role === 'user' ? (
+              <HomePage />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+        <Route
+          path="/apply"
+          element={
+            user?.token && user.role === 'user' ? (
+              <ConnectionStepper />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+        <Route
+          path="/tracker"
+          element={
+            user?.token && user.role === 'user' ? (
+              <EnergyTrackerPage />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+
+        {/* Helpdesk for regular users */}
+        <Route
+          path="/helpdesk"
+          element={
+            user?.token && user.role === 'user' ? (
+              <HelpdeskPage />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+
+        {/* Bill & KYC Portal */}
+        <Route
+          path="/kyc-bill"
+          element={
+            user?.token && user.role === 'user' ? (
+              <KycBillDashboard />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+
+        {/* Admin Routes */}
         <Route
           path="/admin"
-          element={['admin', 'superadmin'].includes(user?.role)
-            ? <AdminDashboard />
-            : <Navigate to="/" />}
+          element={
+            user?.token && ['admin', 'superadmin'].includes(user.role) ? (
+              <AdminDashboard />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
         />
         <Route
           path="/admin/connections"
-          element={['admin', 'superadmin'].includes(user?.role)
-            ? <ConnectionRequests />
-            : <Navigate to="/" />}
+          element={
+            user?.token && ['admin', 'superadmin'].includes(user.role) ? (
+              <ConnectionRequests />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
         />
         <Route
           path="/admin/helpdesk"
-          element={['admin', 'superadmin'].includes(user?.role)
-            ? <HelpdeskTickets />
-            : <Navigate to="/" />}
+          element={
+            user?.token && ['admin', 'superadmin'].includes(user.role) ? (
+              <HelpdeskTickets />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+        <Route
+          path="/admin/kyc-review"
+          element={
+            user?.token && ['admin', 'superadmin'].includes(user.role) ? (
+              <KycReviewPanel />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
         />
 
-        {/* 👑 Superadmin Routes: exclusive access */}
+        {/* Superadmin Routes */}
         <Route
           path="/superadmin"
-          element={user?.role === 'superadmin'
-            ? <SuperAdminPanel />
-            : <Navigate to="/" />}
+          element={
+            user?.token && user.role === 'superadmin' ? (
+              <SuperAdminPanel />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
         />
         <Route
           path="/superadmin/promote"
-          element={user?.role === 'superadmin'
-            ? <PromoteUser />
-            : <Navigate to="/" />}
+          element={
+            user?.token && user.role === 'superadmin' ? (
+              <PromoteUser />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
         />
+
+        {/* Fallback for any unknown path */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-    </Router>
+    </>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <Router>
+      <AppWrapper />
+    </Router>
+  );
+}

@@ -1,0 +1,90 @@
+.kyc-panel-container {
+  padding: 2rem;
+  background-color: #f4f7fa;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.kyc-panel-container h2 {
+  font-size: 1.6rem;
+  color: #1e1e1e;
+  margin-bottom: 1.5rem;
+}
+
+.kyc-card {
+  background: #ffffff;
+  border: 1px solid #ccd6e0;
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.kyc-card strong {
+  color: #333;
+}
+
+.kyc-files a {
+  margin-left: 8px;
+  color: #0078d4;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.kyc-files a:hover {
+  text-decoration: underline;
+}
+
+.status-Approved {
+  color: green;
+  font-weight: bold;
+}
+
+.status-Rejected {
+  color: red;
+  font-weight: bold;
+}
+
+.status-Pending {
+  color: orange;
+  font-weight: bold;
+}
+
+.kyc-actions textarea {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: vertical;
+  font-size: 0.95rem;
+}
+
+.kyc-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.kyc-buttons button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.kyc-buttons button:hover {
+  opacity: 0.9;
+}
+
+.kyc-buttons button:nth-child(1) {
+  background-color: #28a745; /* Green for Approve */
+}
+
+.kyc-buttons button:nth-child(2) {
+  background-color: #dc3545; /* Red for Reject */
+}

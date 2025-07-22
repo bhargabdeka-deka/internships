@@ -4,6 +4,8 @@ import './WelcomePage.css';
 
 function WelcomePage() {
   const navigate = useNavigate();
+  console.log("WelcomePage rendered");
+
 
   return (
     <div className="welcome-container">
@@ -30,7 +32,14 @@ function WelcomePage() {
         <button onClick={() => navigate('/signup')} className="btn btn-primary">Sign Up</button>
         <button onClick={() => navigate('/login')} className="btn btn-secondary">Log In</button>
       </div>
+      
+       <div className="welcome-container">
+    {/* <h2>👋 Welcome Page Loaded</h2> */}
+    {/* Rest of your content */}
     </div>
+
+    </div>
+       
   );
 }
 

@@ -1,0 +1,115 @@
+/* Main Dashboard Layout */
+.request-dashboard {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding: 1rem 2rem;
+  align-items: flex-start;
+  background-color: #f8f9fc;
+}
+
+/* Left: Pending Requests */
+.pending-section {
+  flex: 1;
+  min-width: 320px;
+}
+
+.pending-section h3 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* Right: Processed Requests */
+.processed-section {
+  flex: 1;
+  min-width: 320px;
+  background-color: #eef7ff;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.processed-section h3 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* Individual Request Card */
+.request-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+  transition: transform 0.2s ease;
+}
+
+.request-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Special styling for processed cards */
+.request-card.processed {
+  background-color: #f9fcff;
+}
+
+/* Status Badges */
+.status-approved {
+  color: #0a970a;
+  font-weight: bold;
+}
+
+.status-rejected {
+  color: #c00000;
+  font-weight: bold;
+}
+
+/* Action Buttons */
+.request-actions {
+  margin-top: 1rem;
+}
+
+.btn-approve,
+.btn-reject {
+  margin-right: 0.5rem;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.btn-approve {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.btn-approve:hover {
+  background-color: #218838;
+}
+
+.btn-reject {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn-reject:hover {
+  background-color: #c82333;
+}
+
+/* Responsive View */
+@media (max-width: 768px) {
+  .request-dashboard {
+    flex-direction: column;
+  }
+
+  .pending-section,
+  .processed-section {
+    width: 100%;
+  }
+}

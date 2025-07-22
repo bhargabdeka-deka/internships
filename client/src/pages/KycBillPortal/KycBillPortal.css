@@ -1,0 +1,268 @@
+/* Main layout */
+.kyc-bill-dashboard {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 1rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Card sections */
+.card-section {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  margin-bottom: 2rem;
+}
+
+/* Loader */
+.loading {
+  text-align: center;
+  font-weight: bold;
+  padding: 2rem;
+  font-size: 1.2rem;
+}
+
+/* Refresh button */
+.refresh-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  background-color: #007aff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.refresh-button:hover {
+  background-color: #005bb5;
+}
+
+/* MeterGate */
+.meter-gate {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.meter-gate label {
+  font-weight: 500;
+}
+.meter-gate input {
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.meter-gate button {
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  background-color: #007aff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.meter-gate button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+.meter-error {
+  color: #dc3545;
+  font-size: 0.9rem;
+}
+
+/* Status badge */
+.badge {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.badge.approved {
+  background-color: #28a745;
+  color: white;
+}
+.badge.pending {
+  background-color: #f4c20d;
+  color: #333;
+}
+.badge.rejected {
+  background-color: #dc3545;
+  color: white;
+}
+.badge.notsubmitted,
+.badge.unknown {
+  background-color: #6c757d;
+  color: white;
+}
+.badge.paid {
+  background-color: #28a745;
+  color: white;
+}
+.badge.unpaid {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* KYC Upload */
+.kyc-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.kyc-upload label {
+  font-weight: 500;
+}
+.kyc-upload input[type="file"] {
+  padding: 0.4rem;
+}
+.kyc-upload small {
+  display: block;
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: 0.2rem;
+}
+.kyc-upload button {
+  align-self: flex-start;
+  padding: 0.5rem 1rem;
+  background-color: #007aff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.kyc-upload button:hover {
+  background-color: #005bb5;
+}
+.upload-message {
+  font-weight: bold;
+  margin-top: 0.5rem;
+  color: #007aff;
+}
+
+/* Bill Viewer */
+.bill-viewer table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.bill-viewer th,
+.bill-viewer td {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+.bill-viewer th {
+  background-color: #f0f0f0;
+  font-weight: 600;
+}
+.bill-action-button {
+  padding: 0.4rem 0.7rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #007aff;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.bill-action-button:hover {
+  background-color: #005bb5;
+}
+.no-bills {
+  text-align: center;
+  padding: 1rem;
+  font-style: italic;
+  color: #666;
+}
+
+/* Bill Summary */
+.download-summery {
+  text-align: right;
+}
+.download-summery button {
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  background-color: #007aff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.download-summery button:hover {
+  background-color: #005bb5;
+}
+
+/* Blocked message */
+.portal-blocked {
+  text-align: center;
+  font-weight: 500;
+  color: #dc3545;
+  font-size: 1rem;
+  padding: 1rem;
+}
+
+/* KYC Status container box */
+.kyc-status-card {
+  background: #f8f8f8;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+/* ✅ Enhanced KYC status visuals */
+.status-pending {
+  background-color: #fff8cc;
+  border-left: 4px solid orange;
+  color: #856404;
+  padding: 1rem;
+  border-radius: 8px;
+}
+.status-approved {
+  background-color: #d6f5d6;
+  border-left: 4px solid green;
+  color: #155724;
+  padding: 1rem;
+  border-radius: 8px;
+}
+.status-rejected {
+  background-color: #f8d7da;
+  border-left: 4px solid red;
+  color: #721c24;
+  padding: 1rem;
+  border-radius: 8px;
+}
+.status-notsubmitted {
+  background-color: #eeeeee;
+  border-left: 4px solid #999;
+  color: #444;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+/* ✅ Info bar above KYC box */
+.kyc-warning {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 1rem;
+  border-left: 4px solid orange;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+/* ✅ Inline badge inside status bar */
+.kyc-badge {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  background-color: #007aff;
+  color: white;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}

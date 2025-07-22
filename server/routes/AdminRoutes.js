@@ -1,51 +1,158 @@
-const express = require('express');
-const router = express.Router();
-const { verifyToken, isAdmin } = require('../middleware/auth');
-const ConnectionRequest = require('../models/Connection'); // adjust if your model file differs
-const Ticket = require('../models/Ticket'); // adjust if named differently
+// routes/AdminRoutes.js
 
-// 📥 Fetch all pending connection applications
-router.get('/applications', verifyToken, isAdmin, async (req, res) => {
-  try {
-    const pending = await ConnectionRequest.find({ status: 'Pending' });
-    res.json(pending);
-  } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch connection requests' });
-  }
-});
+const express              = require('express');
+const router               = express.Router();
+const mongoose             = require('mongoose');
+const { verifyToken, isAdmin } = require('../middleware/authMiddleware');
 
-// ✅ Approve a connection request
-router.put('/applications/:id/approve', verifyToken, isAdmin, async (req, res) => {
-  try {
-    await ConnectionRequest.findByIdAndUpdate(req.params.id, { status: 'Approved' });
-    res.json({ message: 'Connection approved successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Approval failed' });
-  }
-});
+const ConnectionRequest    = require('../models/ConnectionRequest');
+const HelpdeskTicket       = require('../models/HelpdeskTicket');
 
-// 🆘 View all helpdesk tickets
-router.get('/tickets', verifyToken, isAdmin, async (req, res) => {
-  try {
-    const tickets = await Ticket.find();
-    res.json(tickets);
-  } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch tickets' });
-  }
-});
+// Import all admin controllers, including the populated tickets fetch
+const {
+  fetchHelpdeskTickets,
+  fetchKycSubmissions,
+  updateKycStatus
+} = require('../controllers/adminController');
 
-// 📝 Respond to helpdesk ticket
-router.put('/tickets/:id/reply', verifyToken, isAdmin, async (req, res) => {
-  const { reply } = req.body;
-  try {
-    await Ticket.findByIdAndUpdate(req.params.id, {
-      adminReply: reply,
-      status: 'Resolved'
-    });
-    res.json({ message: 'Ticket resolved successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Helpdesk reply failed' });
+/**
+ * GET /api/admin/applications
+ * List all connection applications
+ */
+router.get(
+  '/applications',
+  verifyToken,
+  isAdmin,
+  async (req, res) => {
+    try {
+      console.log(`🔐 Admin ${req.user.email} fetching applications`);
+      const requests = await ConnectionRequest
+        .find()
+        .sort({ createdAt: -1 });
+
+      return res.json(requests);
+    } catch (err) {
+      console.error('❌ Fetch applications failed:', err.message);
+      return res
+        .status(500)
+        .json({ message: 'Failed to fetch applications' });
+    }
   }
-});
+);
+
+/**
+ * PUT /api/admin/applications/:id/status
+ * Update a connection application’s status
+ */
+router.put(
+  '/applications/:id/status',
+  verifyToken,
+  isAdmin,
+  async (req, res) => {
+    try {
+      const { status } = req.body;
+      if (!status) {
+        return res
+          .status(400)
+          .json({ message: 'Missing status value' });
+      }
+      if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res
+          .status(400)
+          .json({ message: 'Invalid application ID' });
+      }
+
+      const updated = await ConnectionRequest.findByIdAndUpdate(
+        req.params.id,
+        { status, decisionDate: new Date() },
+        { new: true }
+      );
+      if (!updated) {
+        return res
+          .status(404)
+          .json({ message: 'Request not found' });
+      }
+
+      console.log(
+        `✅ Admin ${req.user.email} set application ${req.params.id} to ${status}`
+      );
+      return res.json({ message: `Status updated to ${status}`, updated });
+    } catch (err) {
+      console.error('❌ Update status failed:', err.message);
+      return res
+        .status(500)
+        .json({ message: 'Failed to update application status' });
+    }
+  }
+);
+
+/**
+ * GET /api/admin/tickets
+ * Fetch all helpdesk tickets WITH populated user subdocs
+ */
+router.get(
+  '/tickets',
+  verifyToken,
+  isAdmin,
+  fetchHelpdeskTickets
+);
+
+/**
+ * PUT /api/admin/tickets/:id/reply
+ * Send an admin reply and mark ticket as Replied
+ */
+router.put(
+  '/tickets/:id/reply',
+  verifyToken,
+  isAdmin,
+  async (req, res) => {
+    try {
+      const { reply } = req.body;
+      if (!reply?.trim()) {
+        return res
+          .status(400)
+          .json({ message: 'Reply text is required' });
+      }
+
+      const updated = await HelpdeskTicket.findByIdAndUpdate(
+        req.params.id,
+        {
+          adminReply: { text: reply, replyTime: new Date() },
+          status: 'Replied'
+        },
+        { new: true }
+      );
+      if (!updated) {
+        return res
+          .status(404)
+          .json({ message: 'Ticket not found' });
+      }
+
+      console.log(
+        `📝 Admin ${req.user.email} replied to ticket ${req.params.id}`
+      );
+      return res.json({ message: 'Reply sent', ticket: updated });
+    } catch (err) {
+      console.error('❌ Reply failed:', err.message);
+      return res
+        .status(500)
+        .json({ message: 'Failed to send reply' });
+    }
+  }
+);
+
+// KYC routes
+router.get(
+  '/kyc-requests',
+  verifyToken,
+  isAdmin,
+  fetchKycSubmissions
+);
+router.put(
+  '/kyc-status/:kycId',
+  verifyToken,
+  isAdmin,
+  updateKycStatus
+);
 
 module.exports = router;

@@ -1,0 +1,49 @@
+/* StepUploadDocuments.css */
+.step-upload-docs {
+  background: #f2f0ff;
+  padding: 28px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.step-upload-docs label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.step-upload-docs input[type="file"] {
+  padding: 8px 0;
+  font-size: 0.9rem;
+}
+
+.step-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.step-buttons button {
+  background-color: #6200ea;
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.step-buttons button:hover {
+  background-color: #4500b5;
+}
+
+.step-buttons button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}

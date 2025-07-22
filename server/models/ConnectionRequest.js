@@ -1,27 +1,93 @@
 const mongoose = require('mongoose');
 
-const connectionSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  phone: String,
-  address: String,
-  connectionType: String, // 'Residential' or 'Commercial'
-  documents: {
-    aadhaar: String, // File path or URL
-    addressProof: String,
+const connectionRequestSchema = new mongoose.Schema({
+  fullName: {
+    type: String,
+    required: true,
+    trim: true
   },
+
+  userType: {
+    type: String,
+    required: true,
+    trim: true
+  },
+
+  address: {
+    type: String,
+    required: true,
+    trim: true
+  },
+
+  pincode: {
+    type: String,
+    required: true,
+    trim: true
+  },
+
+  load: {
+    type: Number,
+    required: true
+  },
+
+  meterType: {
+    type: String,
+    required: true,
+    trim: true
+  },
+
+  contact: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  
+  documents: {
+    type: [String],
+    required: true,
+    validate: {
+      validator: arr => arr.length === 2,
+      message: 'Must upload both Aadhaar and proof documents'
+    }
+  },
+
   status: {
     type: String,
-    default: 'Pending', // 'Pending', 'Under Review', 'Approved', 'Rejected'
+    enum: ['Pending', 'Under Review', 'Approved', 'Rejected'],
+    default: 'Pending'
   },
-  schedule: {
-    visitDate: Date,
-    engineerAssigned: String,
+
+  decisionDate: {
+    type: Date
   },
+
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+
+  email: {
+    type: String,
+    required: true,
+    trim: true
+  },
+
+  meterNumber: {
+    type: String,
+    required: true,
+    trim: true,
+    match: /^[A-Z0-9\-]{6,20}$/ // ✅ Optional pattern for validation (e.g. alphanumeric with hyphens)
+  },
+
   createdAt: {
     type: Date,
-    default: Date.now,
-  },
+    default: Date.now
+  }
 });
 
-module.exports = mongoose.model('ConnectionRequest', connectionSchema);
+// Index for faster retrieval/sorting
+connectionRequestSchema.index({ createdAt: -1 });
+connectionRequestSchema.index({ meterNumber: 1 });
+
+module.exports = mongoose.model('ConnectionRequest', connectionRequestSchema);

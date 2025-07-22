@@ -1,0 +1,47 @@
+/* StepAddressMeter.css */
+.step-address-meter {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: #f9f7ff;
+  padding: 28px;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+.step-address-meter input,
+.step-address-meter select {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border 0.2s ease;
+}
+
+.step-address-meter input:focus,
+.step-address-meter select:focus {
+  border-color: #6200ea;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(98, 0, 234, 0.15);
+}
+
+.step-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.step-buttons button {
+  background-color: #6200ea;
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.step-buttons button:hover {
+  background-color: #4500b5;
+}

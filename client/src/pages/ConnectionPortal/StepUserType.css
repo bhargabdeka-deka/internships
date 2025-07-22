@@ -1,0 +1,51 @@
+/* StepUserType.css */
+.step-user-type {
+  background: #f5f2ff;
+  padding: 28px;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(98, 0, 234, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.step-user-type label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #333;
+  gap: 6px;
+}
+
+.step-user-type input,
+.step-user-type select {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.step-user-type input:focus,
+.step-user-type select:focus {
+  border-color: #6200ea;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(98, 0, 234, 0.2);
+}
+
+.step-user-type button {
+  background-color: #6200ea;
+  color: #fff;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  align-self: flex-end;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.step-user-type button:hover {
+  background-color: #4500b5;
+}

@@ -7,40 +7,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 // 🧠 District mapping
 const districtCodes = {
-  Jorhat: '717',
-  Kamrup: '701',
-  Dibrugarh: '725',
-  Barpeta: '730',
-  Nalbari: '733',
-  Dhemaji: '740',
-  Golaghat: '744',
-  Sonitpur: '752',
-  Karbi_Anglong: '757',
-  Bongaigaon: '762',
-  Cachar: '765',
-  Dhubri: '767',
-  Dima_Hasao: '770',
-  Hailakandi: '773',
-  Hojai: '775',
-  Kokrajhar: '778',
-  Lakhimpur: '781',
-  Majuli: '784',
-  Morigaon: '787',
-  Nagaon: '790',
-  Sivasagar: '793',
-  Tinsukia: '796',
-  Chirang: '799',
-  Baksa: '802',
-  Udalguri: '805',
-  Kamrup_Metro: '808',
-  Karimganj: '811',
-  Tamulpur: '814',
-  Biswanath: '817',
-  Bajali: '820',
-  West_Karbi_Anglong: '823',
-  South_Salmara: '826',
-  Goalpara: '829',
-  North_Cachar: '832'
+  Jorhat: '717', Kamrup: '701', Dibrugarh: '725', Barpeta: '730', Nalbari: '733', Dhemaji: '740',
+  Golaghat: '744', Sonitpur: '752', Karbi_Anglong: '757', Bongaigaon: '762', Cachar: '765',
+  Dhubri: '767', Dima_Hasao: '770', Hailakandi: '773', Hojai: '775', Kokrajhar: '778',
+  Lakhimpur: '781', Majuli: '784', Morigaon: '787', Nagaon: '790', Sivasagar: '793',
+  Tinsukia: '796', Chirang: '799', Baksa: '802', Udalguri: '805', Kamrup_Metro: '808',
+  Karimganj: '811', Tamulpur: '814', Biswanath: '817', Bajali: '820', West_Karbi_Anglong: '823',
+  South_Salmara: '826', Goalpara: '829', North_Cachar: '832'
 };
 
 function SignUp() {
@@ -65,7 +38,6 @@ function SignUp() {
   // 📦 Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     if (name === 'district') {
       const meterId = generateMeterId(value);
       setFormData({ ...formData, district: value, meterNumber: meterId });
@@ -78,10 +50,41 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('📦 Sending to backend:', formData);
+
     try {
-      await axios.post('http://localhost:5000/api/users/signup', formData);
-      toast.success('✅ Registration successful!', { autoClose: 2000 });
-      setTimeout(() => navigate('/login'), 2000);
+      const response = await axios.post('http://localhost:5000/api/users/signup', formData);
+
+      const {
+        token,
+        name,
+        email,
+        role,
+        meterNumber,
+        phoneNumber,
+        district
+      } = response.data;
+
+      // ✅ Save full user object
+      const userPayload = {
+        token,
+        name,
+        email,
+        role,
+        meterNumber,
+        phoneNumber,
+        district
+      };
+
+      localStorage.setItem('user', JSON.stringify(userPayload));
+      console.log("✅ Saved to localStorage:", userPayload);
+
+      toast.success('✅ Account created! Redirecting to dashboard...', { autoClose: 1800 });
+
+      // ✅ Trigger full page reload to sync navbar and homepage
+      setTimeout(() => {
+        window.location.href = '/homepage';
+      }, 1800);
+
     } catch (err) {
       const errorMsg = err.response?.data?.message || 'Signup failed. Try again!';
       toast.error(`❌ ${errorMsg}`, { autoClose: 3000 });
@@ -147,8 +150,6 @@ function SignUp() {
         <button type="submit">Sign Up</button>
       </form>
       <p>Already have an account? <span onClick={() => navigate('/login')}>Log in</span></p>
-
-      {/* ✅ Toast notifications */}
       <ToastContainer position="top-right" />
     </div>
   );
